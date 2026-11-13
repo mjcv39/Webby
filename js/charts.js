@@ -12,7 +12,7 @@
       <div class="donut-c"><b>${o.big != null ? o.big : total}</b><span>${o.small || 'total'}</span></div></div>`;
   };
 
-  T.gauge = (v, color) => `<div class="gauge"><svg viewBox="0 0 120 70"><path d="M10 62a50 50 0 01100 0" pathLength="100" fill="none" stroke="var(--line)" stroke-width="10" stroke-linecap="round"/><path class="gfill" d="M10 62a50 50 0 01100 0" pathLength="100" fill="none" stroke="${color || 'url(#gg)'}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${v} 100"/><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#e06464"/><stop offset=".6" stop-color="#f1745e"/><stop offset="1" stop-color="#edd0ac"/></linearGradient></defs></svg><div class="gauge-c"><b data-count="${v}" data-suf="%">0%</b><span>readiness</span></div></div>`;
+  T.gauge = (v, color) => `<div class="gauge"><svg viewBox="0 0 120 70"><path d="M10 62a50 50 0 01100 0" pathLength="100" fill="none" stroke="var(--line)" stroke-width="10" stroke-linecap="round"/><path class="gfill" d="M10 62a50 50 0 01100 0" pathLength="100" fill="none" stroke="${color || 'url(#gg)'}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${v} 100"/><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#ff3e7f"/><stop offset=".6" stop-color="#ff4fa8"/><stop offset="1" stop-color="#edd0ac"/></linearGradient></defs></svg><div class="gauge-c"><b data-count="${v}" data-suf="%">0%</b><span>readiness</span></div></div>`;
 
   T.ring = (v, size, color) => {
     size = size || 64; color = color || '#3b82f6';

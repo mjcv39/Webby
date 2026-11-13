@@ -40,7 +40,7 @@
   };
   T.icon = (n, cls) => `<svg class="ic ${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n] || ''}</svg>`;
 
-  T.LOGO = `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbc3b9"/><stop offset=".5" stop-color="#f1745e"/><stop offset="1" stop-color="#e06464"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="#2a1317"/><path d="M20 6l11.500 6.500v13L20 34 8.500 25.500v-13z" fill="none" stroke="url(#lg)" stroke-width="2.200" stroke-linejoin="round"/><path d="M20 6v8M8.500 12.500L15 17M31.500 12.500L25 17" stroke="url(#lg)" stroke-width="1.600" stroke-linecap="round"/><circle cx="20" cy="20" r="4.500" fill="url(#lg)"/><circle cx="20" cy="20" r="1.800" fill="#2a1317"/></svg>`;
+  T.LOGO = `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb3da"/><stop offset=".5" stop-color="#ff4fa8"/><stop offset="1" stop-color="#ff3e7f"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="#2a0a22"/><path d="M20 6l11.500 6.500v13L20 34 8.500 25.500v-13z" fill="none" stroke="url(#lg)" stroke-width="2.200" stroke-linejoin="round"/><path d="M20 6v8M8.500 12.500L15 17M31.500 12.500L25 17" stroke="url(#lg)" stroke-width="1.600" stroke-linecap="round"/><circle cx="20" cy="20" r="4.500" fill="url(#lg)"/><circle cx="20" cy="20" r="1.800" fill="#2a0a22"/></svg>`;
 
   T.esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   T.$ = (s, r) => (r || document).querySelector(s);

@@ -27,7 +27,7 @@
       case 'Human Oversight':
         return sec('Oversight design', tbl(['Role', 'Responsibility', 'Authority'], [['Reviewer', 'Checks each recommendation before action', 'Can override any output'], ['System owner', 'Samples decisions weekly; reviews override rates', 'Can pause the system'], ['Governance board', 'Quarterly oversight review', 'Can withdraw approval']])) + sec('Safeguards', `<ul class="ticks">${['Stop button and manual fallback tested quarterly', 'Automation-bias training for reviewers', 'Confidence thresholds trigger mandatory review', 'Override reasons logged for audit'].map(x => `<li>${I('check')}${x}</li>`).join('')}</ul>`) + `<p class="small muted">Reference: Art. 14 (provider design) and Art. 26 (deployer measures).</p>`;
       case 'Model Evaluation':
-        return sec('Results', T.hbars([{ k: 'Accuracy', v: 91 }, { k: 'Robustness (perturbation)', v: 84 }, { k: 'Group parity', v: 88 }, { k: 'Safety refusals', v: 96 }], 100, 'linear-gradient(90deg,#e06464,#f1745e,#fbc3b9)')) +
+        return sec('Results', T.hbars([{ k: 'Accuracy', v: 91 }, { k: 'Robustness (perturbation)', v: 84 }, { k: 'Group parity', v: 88 }, { k: 'Safety refusals', v: 96 }], 100, 'linear-gradient(90deg,#ff3e7f,#ff4fa8,#ffb3da)')) +
           sec('Findings', `<p>Performance gap between demographic groups within the ${T.esc('3%')} tolerance; one failure mode found under adversarial prompts and tracked as an open action.</p>`) + `<p class="small muted">Simulated figures for demonstration only.</p>`;
       case 'Transparency':
         return sec('Disclosure text (as shown to users)', `<div class="disclosure">${I('shield')}<div><b>You are chatting with an AI assistant.</b><br>Answers are generated automatically and may contain mistakes. You can ask for a human agent at any time.</div></div>`) +
@@ -78,7 +78,7 @@
     },
     dldoc: el => {
       const d = T.docs.find(x => x.id === el.dataset.id);
-      const html = `<!doctype html><meta charset="utf-8"><title>${T.esc(d.name)}</title><style>body{font:15px/1.55 system-ui,sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#2a1317}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #ecd9cf;padding:6px 10px;text-align:left}th{background:#fbf1ec}.badge,.stat,.sev{padding:2px 8px;border-radius:99px;background:#fbe9e3;font-size:12px}.paper-w{color:#b91c1c;font-weight:700;letter-spacing:.1em}svg{display:none}.paper-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.paper-meta small{display:block;color:#866}.hb-t{height:8px;background:#f3e3dc;border-radius:9px}.hb-t i{display:block;height:100%;background:#f1745e;border-radius:9px}.hb{display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;margin:6px 0}</style>` + docHTML(d).replace(/data-w="(\d+)"/g, 'style="width:$1%"');
+      const html = `<!doctype html><meta charset="utf-8"><title>${T.esc(d.name)}</title><style>body{font:15px/1.55 system-ui,sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#2a0a22}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #ecd9cf;padding:6px 10px;text-align:left}th{background:#fbf1ec}.badge,.stat,.sev{padding:2px 8px;border-radius:99px;background:#fbe9e3;font-size:12px}.paper-w{color:#b91c1c;font-weight:700;letter-spacing:.1em}svg{display:none}.paper-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.paper-meta small{display:block;color:#866}.hb-t{height:8px;background:#f3e3dc;border-radius:9px}.hb-t i{display:block;height:100%;background:#ff4fa8;border-radius:9px}.hb{display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;margin:6px 0}</style>` + docHTML(d).replace(/data-w="(\d+)"/g, 'style="width:$1%"');
       T.download(d.id + '-' + d.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 40).toLowerCase() + '.html', html, 'text/html');
     }
   });
@@ -88,7 +88,7 @@
     id: 'evidence', label: 'Evidence',
     render() {
       const n = s => T.docs.filter(d => d.status === s).length;
-      return `<section id="evidence" class="scene">
+      return `<section id="evidence" class="scene"><span class="bignum" data-par aria-hidden="true">05</span>
   <div class="wrap evidence">
     <div class="ev-l">
       <span class="chap rv"><b>05</b>Evidence</span>
@@ -97,7 +97,7 @@
       <div class="chips rv">${T.DOC_CATS.map(c => `<span class="chip">${I(CI[c])}${c}</span>`).join('')}</div>
       <p class="hint-t rv">${I('eye')} Click any document to open it</p>
     </div>
-    <div class="fan" data-scrub>${FAN.map((id, i) => mini(T.docs.find(d => d.id === id), i)).join('')}</div>
+    <div class="fan" data-scrub><div class="ph ph-card fan-ph" data-par aria-hidden="true"><img src="img/signing.jpg" alt="" loading="lazy" decoding="async"></div><span class="fan-cap">Every decision, on record</span>${FAN.map((id, i) => mini(T.docs.find(d => d.id === id), i)).join('')}</div>
   </div>
 </section>`;
     }

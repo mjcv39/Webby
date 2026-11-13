@@ -9,7 +9,7 @@ T.pages = {}; T.cleanup = []; T.state = {};
   T.COMPANY = 'Halvorsen Group (fictional)';
 
   T.RISK = {
-    prohibited: { label: 'Prohibited', color: '#ff4d6d', art: 'Article 5', blurb: 'Banned outright' },
+    prohibited: { label: 'Prohibited', color: '#ff4040', art: 'Article 5', blurb: 'Banned outright' },
     high: { label: 'High risk', color: '#f1745e', art: 'Article 6 · Annexes I & III', blurb: 'Strict requirements' },
     limited: { label: 'Limited risk', color: '#edd0ac', art: 'Article 50', blurb: 'Must disclose AI' },
     minimal: { label: 'Minimal risk', color: '#7fd1c7', art: 'No specific AI Act duties', blurb: 'Free to use' }

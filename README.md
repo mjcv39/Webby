@@ -29,7 +29,7 @@ python3 -m http.server 8000
 
 ## Design
 
-- **Palette** ("Sunrise"): `#4f252a` wine, `#e06464` coral, `#f1745e` sun, `#edd0ac` sand, `#fbc3b9` blush, on a near-black night sky, with a teal accent for "minimal risk".
+- **Palette** ("Pink sunrise"): true pink `#ff3e9a` as the main accent, soft pink `#ffb3da`, rose `#ff3e7f` and plum night skies. Orange `#f1745e` is kept only for "high risk", teal for "minimal risk".
 - **Type:** Space Grotesk (display) + Inter (text).
 - **Motion:**
   - Pinned, scroll-scrubbed scenes.
@@ -40,6 +40,7 @@ python3 -m http.server 8000
   - The monitor tilts into view.
   - The document fan spreads as you scroll.
   - A cursor glow and film grain.
+  - A background layer of drifting aurora light, a parallax dot matrix, shooting stars and giant outlined chapter numerals.
   - All of it respects `prefers-reduced-motion`.
 
 ## Structure
@@ -59,3 +60,7 @@ js/app.js           scroll engine: mounting, pinning, reveals, sky, rail
 ## Regulatory notes
 
 Based on Regulation (EU) 2024/1689 ([EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1689/oj)). Classification follows the **intended purpose** of an AI *system*, never the model brand. The timeline reflects the Digital Omnibus on AI (2026), which postponed high-risk obligations to 2 Dec 2027 (Annex III) and 2 Aug 2028 (Annex I). Confirm current dates against official sources.
+
+## Photography
+
+The real-world photos in `img/` are from [Unsplash](https://unsplash.com/license), which allows free use without permission. They were downloaded, re-encoded and stripped of metadata, and they are served from the repo, so the site works offline. On the page they are colour-graded pink in CSS. The hero uses a real sunrise photograph with an optical bloom and lens flare added on the sun.

@@ -20,11 +20,11 @@
       <aside class="a-side">${T.LOGO}${['layers', 'scan', 'pulse', 'file', 'users', 'shield'].map((k, i) => `<span class="${i ? '' : 'on'}">${I(k)}</span>`).join('')}</aside>
       <div class="a-main">
         <div class="a-top"><div><b>Governance overview</b><small>${T.COMPANY} · ${T.fmt(new Date())}</small></div><div class="a-search">${I('search')} Search systems</div><span class="a-av">IK</span></div>
-        <div class="a-kpis">${kpi('AI systems', total, '#fbc3b9')}${kpi('High risk', c.high, T.RISK.high.color)}${kpi('Limited', c.limited, T.RISK.limited.color)}${kpi('Minimal', c.minimal, T.RISK.minimal.color)}${kpi('Prohibited', c.prohibited, T.RISK.prohibited.color)}</div>
+        <div class="a-kpis">${kpi('AI systems', total, '#ffb3da')}${kpi('High risk', c.high, T.RISK.high.color)}${kpi('Limited', c.limited, T.RISK.limited.color)}${kpi('Minimal', c.minimal, T.RISK.minimal.color)}${kpi('Prohibited', c.prohibited, T.RISK.prohibited.color)}</div>
         <div class="a-row">
           <div class="a-card"><h4>Risk distribution</h4>${T.donut(['minimal', 'limited', 'high', 'prohibited'].map(k => ({ v: c[k], color: T.RISK[k].color, label: T.RISK[k].label })), { size: 150, th: 14, big: total, small: 'systems' })}</div>
           <div class="a-card"><h4>Compliance readiness</h4>${T.gauge(overall)}</div>
-          <div class="a-card wide"><h4>Readiness trend · 12 months</h4>${T.line(T.trend, T.trendLabels, { h: 150, color: '#f1745e', suf: '%', min: 40, max: 80 })}</div>
+          <div class="a-card wide"><h4>Readiness trend · 12 months</h4>${T.line(T.trend, T.trendLabels, { h: 150, color: '#ff4fa8', suf: '%', min: 40, max: 80 })}</div>
         </div>
         <div class="a-row b">
           <div class="a-card wide2"><h4>AI system portfolio <small>${total} registered</small></h4>
@@ -65,7 +65,7 @@
   T.scenes.product = {
     id: 'product', label: 'The platform',
     render() {
-      return `<section id="product" class="scene">
+      return `<section id="product" class="scene">${T.photo('city.jpg', 'ph-band')}<span class="bignum" data-par aria-hidden="true">04</span>
   <div class="wrap">
     <div class="scene-h"><span class="chap rv"><b>04</b>The platform</span><h2>One screen for your <span class="warm">whole AI estate.</span></h2><p class="sub rv">Tap the glowing points to explore. Anything you added in chapter 3 is already here.</p></div>
   </div>

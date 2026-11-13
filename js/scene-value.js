@@ -2,7 +2,7 @@
 (function (T) {
   T.scenes = T.scenes || {};
   const I = T.icon;
-  const benefits = [['eye', 'Visibility', 'Every AI system, vendor and shadow tool in one registry'], ['scale', 'Readiness', 'Know which EU AI Act duties apply, and when'], ['users', 'Accountability', 'Named owners, approvals and audit trails'], ['star', 'Trust', 'Prove responsible AI to customers and regulators']];
+  const benefits = [['eye', 'Visibility', 'Every AI system, vendor and shadow tool in one registry', 'earth.jpg'], ['scale', 'Readiness', 'Know which EU AI Act duties apply, and when', 'library.jpg'], ['users', 'Accountability', 'Named owners, approvals and audit trails', 'meeting.jpg'], ['star', 'Trust', 'Prove responsible AI to customers and regulators', 'justice.jpg']];
   /* [label, x%, y%, rotation, isKeyProblem] hand-placed so nothing overlaps */
   const CHAOS = [['Scattered AI tools', 2, 4, -6, 1], ['GPT tab', 62, 0, 9, 0], ['No clear owners', 30, 20, 5, 1], ['v7_FINAL.docx', 0, 37, -4, 0], ['Manual assessments', 40, 42, -7, 1],
     ['who owns this?', 6, 58, 8, 0], ['Missing documents', 36, 66, 4, 1], ['Reactive firefighting', 4, 84, -5, 1], ['shadow tool', 60, 88, 10, 0]];
@@ -12,18 +12,18 @@
   T.scenes.value = {
     id: 'value', label: 'The payoff',
     render() {
-      return `<section id="value" class="scene">
+      return `<section id="value" class="scene"><span class="bignum" data-par aria-hidden="true">06</span>
   <div class="wrap">
     <div class="scene-h"><span class="chap rv"><b>06</b>The payoff</span><h2>From shadow AI <span class="warm">to sunrise.</span></h2><p class="sub rv">Drag the handle.</p></div>
     <div class="ba rv" data-anim="zoom" id="ba" style="--x:50%">
-      <div class="ba-l ba-night"><span class="ba-tag">Without governance</span><div class="ba-side">
+      <div class="ba-l ba-night">${T.photo('servers.jpg')}<span class="ba-tag">Without governance</span><div class="ba-side">
         <div class="chaos">${CHAOS.map(c => `<span class="${c[4] ? 'k' : ''}" style="--x:${c[1]}%;--y:${c[2]}%;--r:${c[3]}deg">${c[4] ? I('x') : ''}${c[0]}</span>`).join('')}</div></div></div>
-      <div class="ba-l ba-day"><span class="ba-tag">With Tessera</span><div class="ba-side r">
+      <div class="ba-l ba-day">${T.photo('celebrate.jpg')}<span class="ba-tag">With Tessera</span><div class="ba-side r">
         <ul>${withp.map(x => `<li>${I('check')}${x}</li>`).join('')}</ul></div></div>
       <div class="ba-h"><span>${I('chevron')}</span></div>
       <input type="range" min="2" max="98" value="50" id="ba-r" aria-label="Compare without and with Tessera">
     </div>
-    <div class="benefits" data-stagger>${benefits.map(b => `<div class="ben"><span class="ben-i">${I(b[0])}</span><b>${b[1]}</b><small>${b[2]}</small></div>`).join('')}</div>
+    <div class="benefits" data-stagger>${benefits.map(b => `<div class="ben"><span class="ben-ph" aria-hidden="true"><img src="img/${b[3]}" alt="" loading="lazy" decoding="async"></span><span class="ben-i">${I(b[0])}</span><b>${b[1]}</b><small>${b[2]}</small></div>`).join('')}</div>
   </div>
   <div class="marquee" aria-label="Built for"><div class="mq-track">${[0, 1].map(() => audience.map(a => `<span>${a}</span>`).join('<i>✦</i>')).join('<i>✦</i>')}</div></div>
 </section>`;
@@ -46,7 +46,7 @@
     id: 'finale', label: 'Finish',
     render() {
       return `<section id="finale" class="scene finale">
-  <div class="sunrise" aria-hidden="true"><div class="big-sun"></div><div class="rays"></div></div>
+  ${T.photo('mountains.jpg', 'ph-finale')}<div class="sunrise" aria-hidden="true"><div class="rays"></div></div>
   <div class="finale-c">
     <div class="f-logo rv" data-anim="zoom">${T.LOGO}</div>
     <h2 class="display">Govern AI <span class="warm">with confidence.</span></h2>

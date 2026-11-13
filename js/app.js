@@ -52,6 +52,7 @@
 
   /* ---------- scroll-driven frame ---------- */
   const pinned = ORDER.map(k => T.scenes[k]).filter(s => s.pin).map(s => ({ s, el: document.getElementById(s.id) }));
+  const pars = T.$$('[data-par]', app);
   const scrubs = T.$$('[data-scrub]', app), intro = T.$('#intro'), sections = ORDER.map(k => document.getElementById(T.scenes[k].id));
   let lastActive = '';
   function frame() {
@@ -66,6 +67,8 @@
       sc.update(clamp(-r.top / Math.max(r.height - vh, 1), -1, 1)); /* negative while the chapter scrolls into view */
     });
     scrubs.forEach(el => { const r = el.getBoundingClientRect(); el.style.setProperty('--sp', clamp((vh - r.top) / (vh * .85), 0, 1).toFixed(3)); });
+    /* parallax: -1 (below the viewport centre) … 1 (above it) */
+    pars.forEach(el => { const r = el.getBoundingClientRect(); if (r.bottom < -vh || r.top > vh * 2) return; el.style.setProperty('--pp', clamp((r.top + r.height / 2 - vh / 2) / vh, -1.5, 1.5).toFixed(3)); });
     let active = sections[0].id;
     sections.forEach(sec => { if (sec.getBoundingClientRect().top <= vh * .5) active = sec.id; });
     if (active !== lastActive) { railLinks.forEach(a => a.classList.toggle('on', a.dataset.id === active)); lastActive = active; document.body.dataset.scene = active; }
