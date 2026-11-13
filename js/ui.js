@@ -40,7 +40,7 @@
   };
   T.icon = (n, cls) => `<svg class="ic ${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n] || ''}</svg>`;
 
-  T.LOGO = `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="#0d1a36"/><path d="M20 6l11.500 6.500v13L20 34 8.500 25.500v-13z" fill="none" stroke="url(#lg)" stroke-width="2.200" stroke-linejoin="round"/><path d="M20 6v8M8.500 12.500L15 17M31.500 12.500L25 17" stroke="url(#lg)" stroke-width="1.600" stroke-linecap="round"/><circle cx="20" cy="20" r="4.500" fill="url(#lg)"/><circle cx="20" cy="20" r="1.800" fill="#0d1a36"/></svg>`;
+  T.LOGO = `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbc3b9"/><stop offset=".5" stop-color="#f1745e"/><stop offset="1" stop-color="#e06464"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="#2a1317"/><path d="M20 6l11.500 6.500v13L20 34 8.500 25.500v-13z" fill="none" stroke="url(#lg)" stroke-width="2.200" stroke-linejoin="round"/><path d="M20 6v8M8.500 12.500L15 17M31.500 12.500L25 17" stroke="url(#lg)" stroke-width="1.600" stroke-linecap="round"/><circle cx="20" cy="20" r="4.500" fill="url(#lg)"/><circle cx="20" cy="20" r="1.800" fill="#2a1317"/></svg>`;
 
   T.esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   T.$ = (s, r) => (r || document).querySelector(s);
@@ -100,38 +100,13 @@
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-act][role="button"]')) { e.preventDefault(); e.target.click(); }
   });
 
-  /* Shared render of an assessment result (used by Assessment page and Guided Demo) */
-  T.resultHTML = r => {
-    const c = T.RISK[r.cls];
-    const contrast = T.contrast(r.useCase.id).map(u => `<div class="ct-row"><span>${T.esc(u.label)}</span>${T.riskBadge(u.cls)}</div>`).join('');
-    return `<div class="result r-${r.cls}">
-      <div class="res-head">
-        <div class="res-ring">${T.icon(r.cls === 'prohibited' ? 'ban' : r.cls === 'high' ? 'alert' : r.cls === 'limited' ? 'eye' : 'check')}</div>
-        <div><div class="eyebrow">Simulated classification · ${r.id}</div><h3>${c.label}</h3><div class="muted">${T.esc(r.ref)}</div></div>
-        <span class="sim-tag">Simulated</span>
-      </div>
-      <dl class="res-meta">
-        <div><dt>AI system</dt><dd>${T.esc(r.name)}</dd></div>
-        <div><dt>Provider</dt><dd>${T.esc(r.provider)} · ${T.esc(r.model.name)}</dd></div>
-        <div class="wide"><dt>Intended purpose</dt><dd>${T.esc(r.purpose)}</dd></div>
-      </dl>
-      <h4>Why</h4>
-      <p class="why">${T.esc(r.why)}</p>
-      <div class="callout"><b>Purpose drives the outcome, not the model.</b> Same ${T.esc(r.model.name)}, other purposes:
-        <div class="contrast">${contrast}</div></div>
-      <ul class="notes"><li>${T.esc(r.provider)} supplies the <i>model</i>; your <i>system's</i> class follows its purpose</li><li>${r.role === 'provider' ? 'Role: provider' : r.role === 'deployer' ? 'Role: deployer' : 'Role: provider and deployer'}</li></ul>
-      <h4>Potentially applicable requirements <span class="count">${r.reqs.length}</span></h4>
-      <ul class="reqc">${r.reqs.map(q => `<li title="${T.esc(q.desc.replace(/<[^>]+>/g, ''))}"><span>${T.esc(q.title)}</span><code>${q.art}</code></li>`).join('')}</ul>
-      <h4>Next steps</h4>
-      <ol class="steps">${r.next.map(n => `<li>${T.esc(n)}</li>`).join('')}</ol>
-      <p class="disc">${T.icon('alert')}<span><b>Educational demonstration.</b> Simulated and rule-based. Not live AI analysis, a legal determination or a certification.</span></p>
-    </div>`;
+  /* File download helper */
+  T.download = (name, content, type) => {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 500);
+    T.toast('Downloaded ' + name);
   };
-
-  /* Notifications bell */
-  T.refreshBell = () => {
-    const open = T.alerts.filter(a => !a.done);
-    T.$('#bell-n').textContent = open.length; T.$('#bell-n').hidden = !open.length;
-    T.$('#notif').innerHTML = `<div class="notif-h">Notifications</div>` + open.slice(0, 4).map(a => `<a href="#monitoring" class="notif-i"><span class="dot sv-${a.sev}"></span><div><b>${T.esc(a.title)}</b><small>${T.esc(a.ago)} · ${T.esc(a.type)}</small></div></a>`).join('') + `<a class="notif-all" href="#monitoring">Open monitoring ${T.icon('arrow')}</a>`;
-  };
+  /* Scenes can subscribe to portfolio changes (e.g. the dashboard re-renders) */
+  T.listeners = [];
+  T.refreshBell = () => T.listeners.forEach(f => f());
 })(window.T);

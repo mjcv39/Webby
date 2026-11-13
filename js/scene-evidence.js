@@ -1,7 +1,7 @@
-/* Documentation & Compliance Center */
+/* Scene 6 · Evidence: fanned document stack with real previews and downloads */
 (function (T) {
   const I = T.icon, st = T.state = T.state || {};
-  st.docs = { cat: 'All', status: 'All', q: '' }; st.chk = {};
+
   const CI = { 'Inventory': 'layers', 'Risk Assessment': 'scan', 'Technical Documentation': 'cpu', 'Data Governance': 'lock', 'Human Oversight': 'users', 'Model Evaluation': 'chart', 'Transparency': 'eye', 'Audit Log': 'clock', 'Checklist': 'check', 'Incident Report': 'alert' };
 
   const tbl = (h, rows) => `<table class="dt"><thead><tr>${h.map(x => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -27,7 +27,7 @@
       case 'Human Oversight':
         return sec('Oversight design', tbl(['Role', 'Responsibility', 'Authority'], [['Reviewer', 'Checks each recommendation before action', 'Can override any output'], ['System owner', 'Samples decisions weekly; reviews override rates', 'Can pause the system'], ['Governance board', 'Quarterly oversight review', 'Can withdraw approval']])) + sec('Safeguards', `<ul class="ticks">${['Stop button and manual fallback tested quarterly', 'Automation-bias training for reviewers', 'Confidence thresholds trigger mandatory review', 'Override reasons logged for audit'].map(x => `<li>${I('check')}${x}</li>`).join('')}</ul>`) + `<p class="small muted">Reference: Art. 14 (provider design) and Art. 26 (deployer measures).</p>`;
       case 'Model Evaluation':
-        return sec('Results', T.hbars([{ k: 'Accuracy', v: 91 }, { k: 'Robustness (perturbation)', v: 84 }, { k: 'Group parity', v: 88 }, { k: 'Safety refusals', v: 96 }], 100, 'linear-gradient(90deg,#3b82f6,#22d3ee)')) +
+        return sec('Results', T.hbars([{ k: 'Accuracy', v: 91 }, { k: 'Robustness (perturbation)', v: 84 }, { k: 'Group parity', v: 88 }, { k: 'Safety refusals', v: 96 }], 100, 'linear-gradient(90deg,#e06464,#f1745e,#fbc3b9)')) +
           sec('Findings', `<p>Performance gap between demographic groups within the ${T.esc('3%')} tolerance; one failure mode found under adversarial prompts and tracked as an open action.</p>`) + `<p class="small muted">Simulated figures for demonstration only.</p>`;
       case 'Transparency':
         return sec('Disclosure text (as shown to users)', `<div class="disclosure">${I('shield')}<div><b>You are chatting with an AI assistant.</b><br>Answers are generated automatically and may contain mistakes. You can ask for a human agent at any time.</div></div>`) +
@@ -56,61 +56,51 @@
       <div class="paper-f">Fictional organisation · Confidential · Educational demonstration, not a real compliance record or legal advice.</div></div>`;
   }
 
-  function lib() {
-    const f = st.docs, q = f.q.toLowerCase();
-    const list = T.docs.filter(d => (f.cat === 'All' || d.cat === f.cat) && (f.status === 'All' || d.status === f.status) && (!q || (d.name + d.cat + d.sys).toLowerCase().includes(q)));
-    return `<div class="grid g3 docs-g">${list.map(d => { const s = T.getSystem(d.sys); return `<div class="dcard" data-act="doc" data-id="${d.id}" tabindex="0" role="button" aria-label="Preview ${T.esc(d.name)}"><div class="dc-top"><span class="dc-ico">${I(CI[d.cat])}</span>${T.statBadge(d.status)}</div><b>${T.esc(d.name)}</b><div class="dc-meta"><span>${d.cat}</span><span>${s ? T.esc(s.name) : d.sys}</span></div><div class="dc-f"><small>Updated ${T.fmt(d.upd)} · ${d.ver}</small>${I('eye')}</div></div>`; }).join('') || '<p class="empty">No documents match.</p>'}</div>`;
-  }
-  const refresh = () => { const e = T.$('#doclib'); if (e) e.innerHTML = lib(); };
-
-  function checklist(id) {
-    const s = T.getSystem(id), rq = T.reqsFor(T.useIndex[s.useId], 'both');
-    if (!st.chk[id]) { const done = Math.max(0, rq.length - s.open); st.chk[id] = new Set(rq.map((_, i) => i).filter(i => i < done)); }
-    const set = st.chk[id], pct = rq.length ? Math.round(set.size / rq.length * 100) : 0;
-    return `<div class="chk-top"><div>${T.riskBadge(s.cls)}<h3>${T.esc(s.name)}</h3><p class="muted small">${rq.length} potentially applicable requirements (simulated)</p></div>${T.ring(pct, 96, T.RISK[s.cls].color)}</div>
-      <ul class="chk big">${rq.map((q, i) => `<li class="${set.has(i) ? 'done' : ''}"><label><input type="checkbox" data-act="tick" data-s="${id}" data-i="${i}" ${set.has(i) ? 'checked' : ''}><span class="box">${I('check')}</span><span class="ct"><b>${T.esc(q.title)}</b><small>${q.desc}</small></span><code>${q.art}</code></label></li>`).join('')}</ul>`;
+  /* A miniature, realistic-looking document page for the fan */
+  const FAN = ['D-102', 'D-104', 'D-112', 'D-116', 'D-118'];
+  function mini(d, i) {
+    const s = T.getSystem(d.sys);
+    return `<button class="sheet" data-act="doc" data-id="${d.id}" style="--i:${i - 2};--a:${Math.abs(i - 2)}" aria-label="Open ${T.esc(d.name)}">
+      <span class="sh-top">${T.LOGO}<i>${d.id}</i></span>
+      <span class="sh-cat">${I(CI[d.cat])}${d.cat}</span>
+      <b>${T.esc(d.name.split(' — ')[0])}</b><small>${s ? T.esc(s.name) : ''} · ${d.ver}</small>
+      <span class="sh-lines"><i></i><i></i><i></i><i class="s"></i></span>
+      <span class="sh-tbl">${'<i></i>'.repeat(6)}</span>
+      <span class="sh-lines"><i></i><i class="s"></i></span>
+      <span class="stamp st-${d.status.replace(/ /g, '')}">${d.status}</span>
+    </button>`;
   }
 
   Object.assign(T.actions, {
     doc: el => {
       const d = T.docs.find(x => x.id === el.dataset.id);
-      T.openModal(`<div class="doc-view">${docHTML(d)}<div class="modal-f">${d.status === 'Missing' ? `<button class="btn btn-primary" data-act="gendoc" data-id="${d.id}">${I('zap')} Generate draft from template</button>` : ''}<button class="btn ${d.status === 'Missing' ? 'btn-ghost-d' : 'btn-primary'}" data-act="dldoc" data-id="${d.id}">${I('download')} Download sample</button></div></div>`, true);
+      T.openModal(`<div class="doc-view">${docHTML(d)}<div class="modal-f"><button class="btn btn-sun" data-act="dldoc" data-id="${d.id}">${I('download')} Download sample</button></div></div>`, true);
     },
-    gendoc: el => { const d = T.docs.find(x => x.id === el.dataset.id); d.status = 'Draft'; d.upd = new Date(); d.ver = 'v0.1'; T.closeModal(); refresh(); T.toast('Draft generated for ' + d.name); },
     dldoc: el => {
       const d = T.docs.find(x => x.id === el.dataset.id);
-      const html = `<!doctype html><meta charset="utf-8"><title>${T.esc(d.name)}</title><style>body{font:15px/1.55 system-ui,sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#14213d}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #d7deec;padding:6px 10px;text-align:left}th{background:#f1f5fb}.badge,.stat,.sev{padding:2px 8px;border-radius:99px;background:#eef2fb;font-size:12px}.paper-w{color:#b91c1c;font-weight:700;letter-spacing:.1em}svg{display:none}.paper-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.paper-meta small{display:block;color:#667}.bar,.hb-t{height:8px;background:#e5eaf5;border-radius:9px}.hb-t i{display:block;height:100%;background:#3b82f6;border-radius:9px}.hb{display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;margin:6px 0}</style>` + docHTML(d).replace(/data-w="(\d+)"/g, 'style="width:$1%"');
+      const html = `<!doctype html><meta charset="utf-8"><title>${T.esc(d.name)}</title><style>body{font:15px/1.55 system-ui,sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#2a1317}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #ecd9cf;padding:6px 10px;text-align:left}th{background:#fbf1ec}.badge,.stat,.sev{padding:2px 8px;border-radius:99px;background:#fbe9e3;font-size:12px}.paper-w{color:#b91c1c;font-weight:700;letter-spacing:.1em}svg{display:none}.paper-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.paper-meta small{display:block;color:#866}.hb-t{height:8px;background:#f3e3dc;border-radius:9px}.hb-t i{display:block;height:100%;background:#f1745e;border-radius:9px}.hb{display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;margin:6px 0}</style>` + docHTML(d).replace(/data-w="(\d+)"/g, 'style="width:$1%"');
       T.download(d.id + '-' + d.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 40).toLowerCase() + '.html', html, 'text/html');
-    },
-    dcat: el => { st.docs.cat = el.dataset.c; T.$$('[data-act="dcat"]').forEach(b => b.classList.toggle('on', b === el)); refresh(); },
-    dlcsv: () => T.download('tessera-document-register.csv', 'id,name,category,system,updated,status,version\n' + T.docs.map(d => [d.id, '"' + d.name + '"', d.cat, d.sys, T.fmt(d.upd), d.status, d.ver].join(',')).join('\n'), 'text/csv'),
-    tick: el => {
-      const set = st.chk[el.dataset.s], i = +el.dataset.i;
-      el.checked ? set.add(i) : set.delete(i);
-      T.$('#chk-body').innerHTML = checklist(el.dataset.s);
     }
   });
 
-  T.sections.docs = {
-    id: 'docs',
+  T.scenes = T.scenes || {};
+  T.scenes.evidence = {
+    id: 'evidence', label: 'Evidence',
     render() {
-      const stats = ['Approved', 'In review', 'Draft', 'Outdated', 'Missing'].map(s => [s, T.docs.filter(d => d.status === s).length]);
-      return `<section id="docs" class="sec"><div class="wrap">
-  <div class="sec-h"><span class="eyebrow rv">05 · Documentation</span><h2 class="rv">One library instead of scattered files</h2>
-    <ul class="pts rv"><li>Every record has an owner, version and status</li><li>Click a document for a simulated preview and download</li></ul></div>
-  <div class="frag rv" data-anim="zoom"><div class="frag-l"><b>Before</b><div class="frag-chips">${['inbox attachments', 'v7_final.docx', 'wiki page', 'spreadsheet', 'chat export', 'personal laptop', 'vendor PDF'].map((x, i) => `<span style="--r:${(i * 37) % 14 - 7}deg">${x}</span>`).join('')}</div></div><div class="frag-a">${I('arrow')}</div><div class="frag-r"><b>With Tessera</b><div class="frag-hub">${T.LOGO}<span>${T.docs.length} governed records</span></div></div></div>
-  <div class="dstats" data-stagger>${stats.map(s => `<div class="ds"><b>${s[1]}</b>${T.statBadge(s[0])}</div>`).join('')}</div>
-  <div class="docs-split">
-    <div>
-      <div class="lib-top"><div class="search">${I('search')}<input id="dsearch" type="search" placeholder="Search documents" aria-label="Search documents"></div><button class="btn btn-ghost-l btn-sm" data-act="dlcsv">${I('download')} Export register</button></div>
-      <div class="filters">${['All', ...T.DOC_CATS].map((c, i) => `<button class="fchip ${i ? '' : 'on'}" data-act="dcat" data-c="${c}">${c}</button>`).join('')}</div>
-      <div id="doclib">${lib()}</div>
+      const n = s => T.docs.filter(d => d.status === s).length;
+      return `<section id="evidence" class="scene">
+  <div class="wrap evidence">
+    <div class="ev-l">
+      <span class="chap rv"><b>06</b>Evidence</span>
+      <h2>Audit-ready <span class="warm">by default.</span></h2>
+      <ul class="facts-l rv"><li><b>${T.docs.length}</b>governed records</li><li><b>${T.DOC_CATS.length}</b>document types</li><li><b>${n('Approved')}</b>approved, <b>${n('Missing') + n('Outdated')}</b> flagged</li></ul>
+      <div class="chips rv">${T.DOC_CATS.map(c => `<span class="chip">${I(CI[c])}${c}</span>`).join('')}</div>
+      <p class="hint-t rv">${I('eye')} Click any document to open it</p>
     </div>
-    <div class="card chk-card rv" data-anim="right"><span class="eyebrow">Live checklist</span><div id="chk-body">${checklist('S-002')}</div></div>
+    <div class="fan" data-scrub>${FAN.map((id, i) => mini(T.docs.find(d => d.id === id), i)).join('')}</div>
   </div>
-  <p class="disc rv">${I('alert')}<span>Sample documents are fictional and simulated, not real compliance records.</span></p>
-</div></section>`;
-    },
-    init(root) { T.$('#dsearch', root).addEventListener('input', e => { st.docs.q = e.target.value; refresh(); }); }
+</section>`;
+    }
   };
 })(window.T);
+

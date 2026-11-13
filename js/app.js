@@ -1,25 +1,15 @@
-/* Tessera — single-page assembly, scroll animations, scroll-spy */
+/* Tessera — scroll story engine: scenes, pinning, sunrise sky, reveals, chapter rail */
 (function (T) {
-  const ORDER = ['hero', 'platform', 'dashboard', 'assess', 'eu-act', 'docs', 'monitoring', 'value', 'demo'];
-  const app = T.$('#app');
-  const I = T.icon;
-  const CTA = `<section class="cta dk" id="cta"><div class="cta-glow" data-parallax="0.05"></div><div class="wrap">
-    <span class="eyebrow rv">Ready?</span><h2 class="rv">Govern AI with confidence</h2>
-    <ul class="pts rv"><li>See every system</li><li>Know every duty</li><li>Prove every control</li></ul>
-    <div class="cta-row center rv"><a class="btn btn-primary btn-lg" href="#demo">${I('play')} Replay the demo</a><a class="btn btn-ghost btn-lg" href="#top">Back to top ${I('arrow')}</a></div>
-    <p class="small muted rv">Tessera is a fictional product created for an educational project. All data is simulated.</p></div></section>`;
+  const ORDER = ['intro', 'problem', 'rules', 'classify', 'product', 'watch', 'evidence', 'value', 'finale'];
+  const app = T.$('#app'), root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealIO = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
-  }), { threshold: .12, rootMargin: '0px 0px -6% 0px' }) : null;
-  const secIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting && !e.target.classList.contains('vis')) { activate(e.target); secIO.unobserve(e.target); }
-  }), { threshold: .08 }) : null;
+  /* ---------- mount ---------- */
+  app.innerHTML = ORDER.map(k => T.scenes[k].render()).join('');
+  ORDER.forEach(k => { const s = T.scenes[k]; try { s.init && s.init(app); } catch (e) { console.error(k, e); } });
 
-  function activate(sec) { sec.classList.add('vis'); T.initBars(sec); T.countUp(sec); }
-
-  /* Wrap each word of a headline in a masked span so it can slide up on reveal */
+  /* ---------- headline word reveals ---------- */
   function splitWords(el) {
     if (el.dataset.split) return; el.dataset.split = '1'; el.classList.add('sp-h'); el.setAttribute('aria-label', el.textContent.trim());
     let i = 0;
@@ -34,90 +24,81 @@
           w.appendChild(inner); frag.appendChild(w);
         });
         n.replaceWith(frag);
-      } else if (n.nodeType === 1) { const g = n.classList.contains('grad'); walk(n, g ? 'grad' : cls); if (g) n.classList.remove('grad'); }
+      } else if (n.nodeType === 1) { const c = n.className; walk(n, c || cls); n.removeAttribute('class'); }
     });
     walk(el, '');
   }
+  T.$$('.scene h2, .display', app).forEach(splitWords);
 
-  function prepare(root) {
-    T.$$('.sec-h h2, .hero h1, .cta h2', root).forEach(splitWords);
-    T.$$('[data-stagger]', root).forEach(p => Array.from(p.children).forEach((c, i) => { c.classList.add('rv'); c.style.setProperty('--d', i * 80 + 'ms'); }));
-    T.$$('.rv', root).forEach(e => { if (e.dataset.anim) e.classList.add('a-' + e.dataset.anim); revealIO ? revealIO.observe(e) : e.classList.add('in'); });
-    T.$$('section', root).forEach(s => { secIO ? secIO.observe(s) : activate(s); });
+  /* ---------- reveal on scroll ---------- */
+  T.$$('[data-stagger]', app).forEach(p => Array.from(p.children).forEach((c, i) => { c.classList.add('rv'); c.style.setProperty('--d', i * 110 + 'ms'); }));
+  const revealIO = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+  }), { threshold: .15, rootMargin: '0px 0px -8% 0px' }) : null;
+  T.$$('.rv, .sp-h', app).forEach(e => {
+    if (e.closest('.cap')) return;
+    if (e.dataset.anim) e.classList.add('a-' + e.dataset.anim);
+    revealIO ? revealIO.observe(e) : e.classList.add('in');
+  });
+  const secIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !e.target.classList.contains('vis')) { e.target.classList.add('vis'); T.initBars(e.target); T.countUp(e.target); secIO.unobserve(e.target); }
+  }), { threshold: .12 }) : null;
+  T.$$('.scene', app).forEach(s => secIO ? secIO.observe(s) : s.classList.add('vis'));
+
+  /* ---------- chapter rail ---------- */
+  const rail = T.$('#rail');
+  rail.innerHTML = ORDER.map(k => `<a href="#${T.scenes[k].id}" data-id="${T.scenes[k].id}"><i></i><span>${T.scenes[k].label}</span></a>`).join('');
+  const railLinks = T.$$('a', rail);
+
+  /* ---------- scroll-driven frame ---------- */
+  const pinned = ORDER.map(k => T.scenes[k]).filter(s => s.pin).map(s => ({ s, el: document.getElementById(s.id) }));
+  const scrubs = T.$$('[data-scrub]', app), intro = T.$('#intro'), sections = ORDER.map(k => document.getElementById(T.scenes[k].id));
+  let lastActive = '';
+  function frame() {
+    const y = scrollY, vh = innerHeight, max = root.scrollHeight - vh;
+    const s = max > 0 ? y / max : 0;
+    root.style.setProperty('--s', s.toFixed(4));
+    T.$('#prog').style.transform = `scaleX(${s.toFixed(4)})`;
+    if (intro) intro.style.setProperty('--hp', clamp(y / vh, 0, 1).toFixed(3));
+    pinned.forEach(({ s: sc, el }) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -vh || r.top > vh * 2) return;
+      sc.update(clamp(-r.top / Math.max(r.height - vh, 1), 0, 1));
+    });
+    scrubs.forEach(el => { const r = el.getBoundingClientRect(); el.style.setProperty('--sp', clamp((vh - r.top) / (vh * .85), 0, 1).toFixed(3)); });
+    let active = sections[0].id;
+    sections.forEach(sec => { if (sec.getBoundingClientRect().top <= vh * .5) active = sec.id; });
+    if (active !== lastActive) { railLinks.forEach(a => a.classList.toggle('on', a.dataset.id === active)); lastActive = active; document.body.dataset.scene = active; }
+    requestAnimationFrame(frame);
   }
+  requestAnimationFrame(frame);
 
-  function mount() {
-    app.innerHTML = ORDER.map(k => T.sections[k].render()).join('') + CTA;
-    ORDER.forEach(k => { const s = T.sections[k]; try { s.init && s.init(app); } catch (e) { console.error(k, e); } });
-    prepare(app);
-  }
-
-  /* Re-render one section in place (e.g. dashboard after adding a system) */
-  T.rerender = key => {
-    const s = T.sections[key], old = T.$('#' + s.id); if (!old) return;
-    const tmp = document.createElement('div'); tmp.innerHTML = s.render();
-    const fresh = tmp.firstElementChild; old.replaceWith(fresh);
-    T.$$('.rv', fresh).forEach(e => { if (e.dataset.anim) e.classList.add('a-' + e.dataset.anim); e.classList.add('in'); });
-    T.$$('[data-stagger]', fresh).forEach(p => Array.from(p.children).forEach(c => c.classList.add('in')));
-    activate(fresh); s.init && s.init(app);
-  };
-  T.refreshDashboard = () => T.rerender('dashboard');
-
-  /* Scroll-driven effects, throttled with rAF */
-  let ticking = false;
-  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  let lastY = 0;
-  function onScroll() {
-    ticking = false;
-    const y = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
-    T.$('#prog').style.transform = `scaleX(${h > 0 ? y / h : 0})`;
-    const nav = T.$('#nav'); nav.classList.toggle('scrolled', y > 8);
-    nav.classList.toggle('hide', y > 500 && y > lastY + 2 && !T.$('#links').classList.contains('open')); if (y < lastY - 2 || y < 500) nav.classList.remove('hide'); lastY = y;
-    const hero = T.$('#top'); if (hero) hero.style.setProperty('--hp', clamp(y / (innerHeight * .85), 0, 1).toFixed(3));
-    T.$$('[data-zoom]').forEach(el => { const r = el.getBoundingClientRect(); el.style.setProperty('--z', clamp((innerHeight - r.top) / (innerHeight * .65), 0, 1).toFixed(3)); });
-    if (!reduce) {
-      T.$$('[data-parallax]').forEach(el => { const r = el.getBoundingClientRect(); if (r.bottom > -200 && r.top < innerHeight + 200) el.style.transform = `translate3d(0,${(y * parseFloat(el.dataset.parallax)).toFixed(1)}px,0)`; });
-    }
-    T.$$('[data-scrollprog]').forEach(el => { const r = el.getBoundingClientRect(); el.style.setProperty('--p', clamp((innerHeight * .72 - r.top) / Math.max(r.height, 1), 0, 1).toFixed(3)); });
-  }
-  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
-  window.addEventListener('resize', onScroll);
-
-  /* Inertial ("buttery") mouse-wheel scrolling. Touch, keyboard, anchors and inner scroll areas stay native. */
+  /* ---------- inertial wheel scrolling (touch, keys and anchors stay native) ---------- */
   (function inertia() {
     if (reduce || matchMedia('(pointer: coarse)').matches) return;
     let target = 0, cur = 0, raf = 0;
-    const max = () => document.documentElement.scrollHeight - innerHeight;
     const tick = () => {
-      cur += (target - cur) * .09;
-      if (Math.abs(target - cur) < .4) { cur = target; raf = 0; window.scrollTo({ top: cur, behavior: 'instant' }); return; }
-      window.scrollTo({ top: cur, behavior: 'instant' }); raf = requestAnimationFrame(tick);
+      cur += (target - cur) * .085;
+      const done = Math.abs(target - cur) < .4; if (done) cur = target;
+      window.scrollTo({ top: cur, behavior: 'instant' });
+      raf = done ? 0 : requestAnimationFrame(tick);
     };
     window.addEventListener('wheel', e => {
-      if (e.ctrlKey || e.defaultPrevented || e.target.closest('#modal, .tl-feed, .tbl-wrap, select, textarea, .notif')) return;
+      if (e.ctrlKey || e.target.closest('#modal, .a-tbl, select, textarea')) return;
       e.preventDefault();
-      if (!raf) { target = cur = window.scrollY; }
-      target = clamp(target + e.deltaY * (e.deltaMode === 1 ? 32 : 1), 0, max());
+      if (!raf) target = cur = scrollY;
+      target = clamp(target + e.deltaY * (e.deltaMode === 1 ? 32 : 1), 0, root.scrollHeight - innerHeight);
       if (!raf) raf = requestAnimationFrame(tick);
     }, { passive: false });
   })();
 
-  /* Scroll-spy for the nav */
-  function spy() {
-    const links = T.$$('#links a'), map = {};
-    links.forEach(a => map[a.getAttribute('href').slice(1)] = a);
-    if (!('IntersectionObserver' in window)) return;
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a === map[e.target.id]));
-    }), { rootMargin: '-45% 0px -50% 0px' });
-    Object.keys(map).forEach(id => { const s = document.getElementById(id); s && io.observe(s); });
-    ['top', 'demo', 'cta'].forEach(id => { const s = document.getElementById(id); s && io.observe(s); });
-  }
+  /* ---------- soft light that follows the cursor ---------- */
+  (function glow() {
+    const g = T.$('#cursor'); if (!g || reduce || matchMedia('(pointer: coarse)').matches) return;
+    let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y;
+    addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; g.style.opacity = 1; }, { passive: true });
+    (function loop() { cx += (x - cx) * .12; cy += (y - cy) * .12; g.style.transform = `translate3d(${cx - 300}px,${cy - 300}px,0)`; requestAnimationFrame(loop); })();
+  })();
 
-  T.$('#logo-slot').outerHTML = T.LOGO; T.$('#logo-slot2').outerHTML = T.LOGO;
-  mount(); T.refreshBell(); spy(); onScroll();
-  T.$('#bell').addEventListener('click', e => { e.stopPropagation(); const n = T.$('#notif'); n.hidden = !n.hidden; });
-  document.addEventListener('click', e => { if (!e.target.closest('.bellwrap')) T.$('#notif').hidden = true; if (e.target.closest('#links a')) { T.$('#links').classList.remove('open'); T.$('#burger').setAttribute('aria-expanded', 'false'); } });
-  T.$('#burger').addEventListener('click', () => { const l = T.$('#links'), o = l.classList.toggle('open'); T.$('#burger').setAttribute('aria-expanded', o); });
-  if (location.hash.length > 1) setTimeout(() => { const t = document.getElementById(location.hash.slice(1)); t && t.scrollIntoView(); }, 50);
+  if (location.hash.length > 1) setTimeout(() => { const t = document.getElementById(location.hash.slice(1)); t && t.scrollIntoView(); }, 60);
 })(window.T);

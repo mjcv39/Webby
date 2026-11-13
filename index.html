@@ -3,59 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tessera — AI Governance & Compliance Platform</title>
-<meta name="description" content="Tessera is a fictional AI governance platform: inventory every AI system, classify risk under the EU AI Act, centralise documentation and monitor compliance. Educational demo.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1428'/%3E%3Cpath d='M16 5l9 5v9l-9 8-9-8v-9z' fill='none' stroke='%2322d3ee' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%233b82f6'/%3E%3C/svg%3E">
+<title>Tessera — Every AI system, accounted for</title>
+<meta name="description" content="Tessera is a fictional AI governance platform showcased as a scroll story: find every AI system, classify it under the EU AI Act, monitor it and keep audit-ready evidence. Educational demo.">
+<meta name="theme-color" content="#14080b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a1317'/%3E%3Cpath d='M16 5l9 5v9l-9 8-9-8v-9z' fill='none' stroke='%23f1745e' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23fbc3b9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/presentation.css">
 </head>
 <body>
-<a class="skip" href="#app">Skip to content</a>
+<div id="sky" aria-hidden="true"><div class="stars"></div><div class="dawn"></div><div class="glow"></div></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
 <div id="prog" aria-hidden="true"></div>
-<header class="nav" id="nav">
-  <div class="nav-in">
-    <a class="brand" href="#top" aria-label="Tessera, back to top"><span id="logo-slot"></span><span class="brand-name">Tessera</span></a>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="links" id="links" aria-label="Sections">
-      <a href="#platform">Platform</a>
-      <a href="#dashboard">Dashboard</a>
-      <a href="#assess">Assessment</a>
-      <a href="#eu-act">EU AI Act</a>
-      <a href="#docs">Documents</a>
-      <a href="#monitoring">Monitoring</a>
-      <a href="#value">Value</a>
-    </nav>
-    <div class="nav-r">
-      <div class="bellwrap"><button class="bell" id="bell" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg><i id="bell-n">0</i></button><div class="notif" id="notif" hidden></div></div>
-      <a class="btn btn-primary btn-sm" href="#demo">Guided Demo</a>
-    </div>
-  </div>
-</header>
-<main id="app" tabindex="-1"></main>
-<footer class="foot">
-  <div class="wrap foot-in">
-    <div><span class="brand"><span id="logo-slot2"></span><span class="brand-name">Tessera</span></span>
-      <p class="muted">A fictional product for a school/university project. All companies, systems and data are hypothetical.</p></div>
-    <div class="foot-disc"><b>Educational demonstration.</b> Assessments, scores and recommendations are simulated. They are not legal advice, a formal legal determination, live AI analysis or a regulatory certification. Based on <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">Regulation (EU) 2024/1689</a> and the <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">European Commission's AI Act pages</a>.</div>
-  </div>
-</footer>
+<nav id="rail" aria-label="Chapters"></nav>
+<main id="app"></main>
 <div class="modal" id="modal" hidden><div class="modal-bg" data-act="close"></div><div class="modal-box" role="dialog" aria-modal="true" id="modal-box"></div></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 <script src="js/data.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/charts.js"></script>
-<script src="js/sec-hero.js"></script>
-<script src="js/sec-dashboard.js"></script>
-<script src="js/sec-assess.js"></script>
-<script src="js/sec-act.js"></script>
-<script src="js/sec-docs.js"></script>
-<script src="js/sec-monitor.js"></script>
-<script src="js/sec-value.js"></script>
-<script src="js/sec-demo.js"></script>
+<script src="js/scene-intro.js"></script>
+<script src="js/scene-problem.js"></script>
+<script src="js/scene-rules.js"></script>
+<script src="js/scene-classify.js"></script>
+<script src="js/scene-product.js"></script>
+<script src="js/scene-watch.js"></script>
+<script src="js/scene-evidence.js"></script>
+<script src="js/scene-value.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
