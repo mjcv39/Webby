@@ -1,0 +1,12 @@
+{
+  "name": "tessera-ai-governance-demo",
+  "version": "1.0.0",
+  "description": "Tessera: fictional AI governance platform demo site (static, educational)",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
