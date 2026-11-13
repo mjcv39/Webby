@@ -1,6 +1,6 @@
 /* Tessera — scroll story engine: scenes, pinning, sunrise sky, reveals, chapter rail */
 (function (T) {
-  const ORDER = ['intro', 'problem', 'rules', 'classify', 'product', 'watch', 'evidence', 'value', 'finale'];
+  const ORDER = ['intro', 'problem', 'rules', 'classify', 'product', 'evidence', 'value', 'finale'];
   const app = T.$('#app'), root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -63,7 +63,7 @@
     pinned.forEach(({ s: sc, el }) => {
       const r = el.getBoundingClientRect();
       if (r.bottom < -vh || r.top > vh * 2) return;
-      sc.update(clamp(-r.top / Math.max(r.height - vh, 1), 0, 1));
+      sc.update(clamp(-r.top / Math.max(r.height - vh, 1), -1, 1)); /* negative while the chapter scrolls into view */
     });
     scrubs.forEach(el => { const r = el.getBoundingClientRect(); el.style.setProperty('--sp', clamp((vh - r.top) / (vh * .85), 0, 1).toFixed(3)); });
     let active = sections[0].id;

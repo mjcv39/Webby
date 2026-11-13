@@ -1,6 +1,6 @@
 # Tessera — Every AI system, accounted for
 
-A scroll-driven product showcase for **Tessera**, a fictional AI governance platform, built for a school/university presentation. The page tells one story in eight short chapters. It starts in the dark (hidden "shadow AI") and the sky warms into a sunrise as each chapter adds clarity.
+A scroll-driven product showcase for **Tessera**, a fictional AI governance platform, built for a school/university presentation. The page tells one story in seven short chapters. It starts in the dark (hidden "shadow AI") and the sky warms into a sunrise as each chapter adds clarity.
 
 > **Educational demonstration.** All companies, systems, scores and assessments are simulated. Nothing here is legal advice, a formal legal determination, live AI analysis or a regulatory certification.
 
@@ -14,19 +14,18 @@ python3 -m http.server 8000
 
 `server.js` is a zero-dependency static server used for Railway deployment. It only serves `index.html`, `css/` and `js/`.
 
-## The story (about 14 screens of scrolling)
+## The story (about 12 screens of scrolling)
 
 | # | Chapter | What happens |
 |---|---|---|
 | – | Intro | Night horizon, the sun below it, AI systems in orbit |
-| 01 | The problem *(pinned)* | 18 scattered AI tools are pulled into an ordered registry, then colour-coded by risk |
+| 01 | The problem *(pinned)* | As you leave the intro, the sun rises and 18 AI tools float up out of the horizon. They gather into an ordered registry, then get colour-coded by risk |
 | 02 | The rules *(pinned)* | The EU AI Act risk pyramid builds layer by layer; a live timeline marks "today" |
 | 03 | Try it | Pick a model and a purpose; the classification updates instantly. "Add to portfolio" carries it forward |
 | 04 | The platform | A monitor mockup with the live dashboard, explorable hotspots and clickable system profiles (your system appears here) |
-| 05 | Monitoring | Alerts stream in; each opens what happened, why it matters and the fix |
-| 06 | Evidence | A fanned stack of real-looking documents; click to preview and download |
-| 07 | The payoff | Drag-to-compare "shadow AI" vs "sunrise", four benefits, audience marquee |
-| 08 | Finale | The sun is up: recap and call to action |
+| 05 | Evidence | A fanned stack of real-looking documents; click to preview and download |
+| 06 | The payoff | Drag-to-compare "shadow AI" vs "sunrise", four benefits, audience marquee |
+| 07 | Finale | The sun is up: recap and call to action |
 
 ## Design
 

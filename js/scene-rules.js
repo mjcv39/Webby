@@ -18,7 +18,7 @@
     id: 'rules', label: 'The rules', pin: true,
     render() {
       const now = Date.now();
-      return `<section id="rules" class="scene pin" style="--len:230vh">
+      return `<section id="rules" class="scene pin" style="--len:180vh">
   <div class="pin-in">
     <div class="rules-top">
       <span class="chap"><b>02</b>The rules</span>
@@ -44,8 +44,8 @@
     update(p) {
       if (!sec) return;
       /* tiers build from the base upwards */
-      T.$$('.tier', sec).forEach(el => { const i = +el.dataset.i, at = .06 + (3 - i) * .15; el.classList.toggle('on', p > at); });
-      sec.classList.toggle('timeline-on', p > .7);
+      T.$$('.tier', sec).forEach(el => { const i = +el.dataset.i, at = -.3 + (3 - i) * .16; el.classList.toggle('on', p > at); });
+      sec.classList.toggle('timeline-on', p > .3);
     }
   };
 })(window.T);

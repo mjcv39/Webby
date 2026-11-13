@@ -14,7 +14,7 @@
     render() {
       return `<section id="value" class="scene">
   <div class="wrap">
-    <div class="scene-h"><span class="chap rv"><b>07</b>The payoff</span><h2>From shadow AI <span class="warm">to sunrise.</span></h2><p class="sub rv">Drag the handle.</p></div>
+    <div class="scene-h"><span class="chap rv"><b>06</b>The payoff</span><h2>From shadow AI <span class="warm">to sunrise.</span></h2><p class="sub rv">Drag the handle.</p></div>
     <div class="ba rv" data-anim="zoom" id="ba" style="--x:50%">
       <div class="ba-l ba-night"><span class="ba-tag">Without governance</span><div class="ba-side">
         <div class="chaos">${CHAOS.map(c => `<span class="${c[4] ? 'k' : ''}" style="--x:${c[1]}%;--y:${c[2]}%;--r:${c[3]}deg">${c[4] ? I('x') : ''}${c[0]}</span>`).join('')}</div></div></div>
@@ -50,7 +50,7 @@
   <div class="finale-c">
     <div class="f-logo rv" data-anim="zoom">${T.LOGO}</div>
     <h2 class="display">Govern AI <span class="warm">with confidence.</span></h2>
-    <ul class="recap rv"><li><b>01</b>Find every system</li><li><b>02</b>Know the rules</li><li><b>03</b>Classify by purpose</li><li><b>04</b>See it all</li><li><b>05</b>Catch issues early</li><li><b>06</b>Keep the evidence</li></ul>
+    <ul class="recap rv"><li><b>01</b>Find every system</li><li><b>02</b>Know the rules</li><li><b>03</b>Classify by purpose</li><li><b>04</b>See it all</li><li><b>05</b>Keep the evidence</li></ul>
     <div class="cta-row rv"><a class="btn btn-sun btn-lg" href="#classify">${I('play')} Try the classifier again</a><a class="btn btn-ghost btn-lg" href="#intro">Back to the start</a></div>
   </div>
   <footer class="f-foot"><span><b>Tessera</b> is a fictional product created for an educational project. All companies, systems and results are simulated. Not legal advice, a legal determination or a certification.</span>

@@ -15,7 +15,7 @@
     <h1 class="display">Every AI system. <span class="warm">Accounted for.</span></h1>
     <p class="lede rv" style="--d:500ms">See it. Classify it. Prove it. Built for the EU AI Act.</p>
   </div>
-  <div class="horizon" aria-hidden="true"><div class="sun"></div><div class="floor"></div></div>
+  <div class="horizon" aria-hidden="true"><div class="flare"></div><div class="sun"></div><div class="floor"></div></div>
   <a class="scroll-hint" href="#problem" aria-label="Start the story"><span>Scroll to begin</span><i></i></a>
 </section>`;
     }

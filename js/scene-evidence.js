@@ -91,7 +91,7 @@
       return `<section id="evidence" class="scene">
   <div class="wrap evidence">
     <div class="ev-l">
-      <span class="chap rv"><b>06</b>Evidence</span>
+      <span class="chap rv"><b>05</b>Evidence</span>
       <h2>Audit-ready <span class="warm">by default.</span></h2>
       <ul class="facts-l rv"><li><b>${T.docs.length}</b>governed records</li><li><b>${T.DOC_CATS.length}</b>document types</li><li><b>${n('Approved')}</b>approved, <b>${n('Missing') + n('Outdated')}</b> flagged</li></ul>
       <div class="chips rv">${T.DOC_CATS.map(c => `<span class="chip">${I(CI[c])}${c}</span>`).join('')}</div>

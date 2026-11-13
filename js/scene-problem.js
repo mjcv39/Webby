@@ -25,7 +25,7 @@
     render() {
       const depts = new Set(T.systems.map(s => s.dept)).size, provs = new Set(T.systems.map(s => s.provider)).size;
       const list = T.systems.slice(-18);
-      return `<section id="problem" class="scene pin" style="--len:260vh">
+      return `<section id="problem" class="scene pin" style="--len:190vh">
   <div class="pin-in">
     <div class="pin-head">
       <span class="chap"><b>01</b>The problem</span>
@@ -46,23 +46,28 @@
     update(p) {
       if (!stage) return;
       const sec = stage.closest('.scene');
-      const step = p < .34 ? 0 : p < .68 ? 1 : 2;
+      const step = p < .2 ? 0 : p < .5 ? 1 : 2;
       if (step !== lastStep) { T.$$('.cap', sec).forEach(c => c.classList.toggle('on', +c.dataset.i === step)); lastStep = step; }
-      sec.classList.toggle('mapped', p > .68);
-      sec.classList.toggle('found', p > .45);
+      sec.classList.toggle('found', p > .32);
+      sec.classList.toggle('mapped', p > .5);
       const cols = W < 640 ? 2 : W < 980 ? 3 : 6, rows = Math.ceil(chips.length / cols);
-      const cw = W / cols, ch = Math.min(H / rows, 96);
-      const gy0 = (H - ch * rows) / 2;
-      const t = ease(clamp((p - .2) / .42, 0, 1));
+      const cw = W / cols, ch = Math.min(H / rows, 96), gy0 = (H - ch * rows) / 2;
+      /* p < 0 while the chapter scrolls in: the systems rise out of the intro's horizon */
+      const burst = ease(clamp((p + .75) / .7, 0, 1));  /* emerge: p -0.75 → -0.05 */
+      const t = ease(clamp((p - .02) / .38, 0, 1));      /* gather into the registry: p 0.02 → 0.40 */
       const drift = performance.now() / 1000;
+      const ox = W / 2 - cw / 2, oy = H + 60;            /* launch point: bottom centre, where the sun was */
       chips.forEach((c, i) => {
         const col = i % cols, row = Math.floor(i / cols);
         const gx = col * cw + 6, gy = gy0 + row * ch;
-        const sx = c.sc.x * W + Math.sin(drift * .6 + i) * 8 * (1 - t), sy = c.sc.y * H + Math.cos(drift * .5 + i) * 8 * (1 - t);
-        const x = sx + (gx - sx) * t, y = sy + (gy - sy) * t, r = c.sc.rot * (1 - t), s = c.sc.s + (1 - c.sc.s) * t;
+        const lag = clamp(burst * 1.3 - (i % 6) * .06, 0, 1);  /* staggered launch */
+        const sx0 = c.sc.x * W + Math.sin(drift * .6 + i) * 8 * (1 - t), sy0 = c.sc.y * H + Math.cos(drift * .5 + i) * 8 * (1 - t);
+        const sx = ox + (sx0 - ox) * lag, sy = oy + (sy0 - oy) * lag;
+        const x = sx + (gx - sx) * t, y = sy + (gy - sy) * t;
+        const r = c.sc.rot * (1 - t) * lag, s = (.3 + .7 * lag) * (c.sc.s + (1 - c.sc.s) * t);
         c.el.style.width = (cw - 12) + 'px';
         c.el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;
-        c.el.style.opacity = (.55 + .45 * Math.max(t, (i % 3) / 3)).toFixed(2);
+        c.el.style.opacity = (lag * (.6 + .4 * Math.max(t, (i % 3) / 3))).toFixed(2);
       });
     }
   };
