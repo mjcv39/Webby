@@ -86,23 +86,10 @@
     const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(to * e).toLocaleString() + suf; if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   });
-  T.reveal = root => {
-    const els = T.$$('.rv', root);
-    if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-    els.forEach(e => io.observe(e));
-  };
 
   /* Action delegation: pages register handlers in T.actions */
   T.actions = {
     close: () => T.closeModal(),
-    acc: el => { const it = el.closest('.acc-item'); const open = it.classList.toggle('open'); el.setAttribute('aria-expanded', open); },
-    tab: el => {
-      const g = el.closest('[data-tabs]'); if (!g) return;
-      T.$$('[data-act="tab"]', g).forEach(b => { b.classList.toggle('on', b === el); b.setAttribute('aria-selected', b === el); });
-      T.$$('[data-pane]', g).forEach(p => p.hidden = p.dataset.pane !== el.dataset.t);
-    },
-    flip: el => el.classList.toggle('flipped')
   };
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-act]');
@@ -128,17 +115,16 @@
         <div><dt>Provider</dt><dd>${T.esc(r.provider)} · ${T.esc(r.model.name)}</dd></div>
         <div class="wide"><dt>Intended purpose</dt><dd>${T.esc(r.purpose)}</dd></div>
       </dl>
-      <h4>Why this classification</h4>
+      <h4>Why</h4>
       <p class="why">${T.esc(r.why)}</p>
-      <div class="callout"><b>Purpose drives the outcome, not the model.</b> ${T.esc(r.provider)}'s ${T.esc(r.model.name)} is not “high” or “low” risk on its own. With the same model, other purposes would classify like this:
+      <div class="callout"><b>Purpose drives the outcome, not the model.</b> Same ${T.esc(r.model.name)}, other purposes:
         <div class="contrast">${contrast}</div></div>
-      <p class="small muted">${r.modelNote}</p>
-      <p class="small muted">${r.roleNote}</p>
+      <ul class="notes"><li>${T.esc(r.provider)} supplies the <i>model</i>; your <i>system's</i> class follows its purpose</li><li>${r.role === 'provider' ? 'Role: provider' : r.role === 'deployer' ? 'Role: deployer' : 'Role: provider and deployer'}</li></ul>
       <h4>Potentially applicable requirements <span class="count">${r.reqs.length}</span></h4>
-      <ul class="reqs">${r.reqs.map(q => `<li><div class="rq-t"><b>${T.esc(q.title)}</b><code>${q.art}</code></div><div class="muted small">${q.desc}</div></li>`).join('')}</ul>
-      <h4>Recommended next steps</h4>
+      <ul class="reqc">${r.reqs.map(q => `<li title="${T.esc(q.desc.replace(/<[^>]+>/g, ''))}"><span>${T.esc(q.title)}</span><code>${q.art}</code></li>`).join('')}</ul>
+      <h4>Next steps</h4>
       <ol class="steps">${r.next.map(n => `<li>${T.esc(n)}</li>`).join('')}</ol>
-      <p class="disc">${T.icon('alert')}<span><b>Educational demonstration.</b> This is a simulated, rule-based result, not live AI analysis, a formal legal determination or a certification. Real classification depends on the full facts and requires qualified legal review.</span></p>
+      <p class="disc">${T.icon('alert')}<span><b>Educational demonstration.</b> Simulated and rule-based. Not live AI analysis, a legal determination or a certification.</span></p>
     </div>`;
   };
 
@@ -146,6 +132,6 @@
   T.refreshBell = () => {
     const open = T.alerts.filter(a => !a.done);
     T.$('#bell-n').textContent = open.length; T.$('#bell-n').hidden = !open.length;
-    T.$('#notif').innerHTML = `<div class="notif-h">Notifications</div>` + open.slice(0, 4).map(a => `<a href="#/monitoring" class="notif-i"><span class="dot sv-${a.sev}"></span><div><b>${T.esc(a.title)}</b><small>${T.esc(a.ago)} · ${T.esc(a.type)}</small></div></a>`).join('') + `<a class="notif-all" href="#/monitoring">Open monitoring ${T.icon('arrow')}</a>`;
+    T.$('#notif').innerHTML = `<div class="notif-h">Notifications</div>` + open.slice(0, 4).map(a => `<a href="#monitoring" class="notif-i"><span class="dot sv-${a.sev}"></span><div><b>${T.esc(a.title)}</b><small>${T.esc(a.ago)} · ${T.esc(a.type)}</small></div></a>`).join('') + `<a class="notif-all" href="#monitoring">Open monitoring ${T.icon('arrow')}</a>`;
   };
 })(window.T);

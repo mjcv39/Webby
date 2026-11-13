@@ -10,25 +10,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/presentation.css">
 </head>
 <body>
 <a class="skip" href="#app">Skip to content</a>
+<div id="prog" aria-hidden="true"></div>
 <header class="nav" id="nav">
   <div class="nav-in">
-    <a class="brand" href="#/home" aria-label="Tessera home"><span id="logo-slot"></span><span class="brand-name">Tessera</span></a>
+    <a class="brand" href="#top" aria-label="Tessera, back to top"><span id="logo-slot"></span><span class="brand-name">Tessera</span></a>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="links" id="links" aria-label="Main">
-      <a href="#/home" data-r="home">Platform</a>
-      <a href="#/dashboard" data-r="dashboard">Dashboard</a>
-      <a href="#/assess" data-r="assess">Risk Assessment</a>
-      <a href="#/eu-ai-act" data-r="eu-ai-act">EU AI Act</a>
-      <a href="#/documents" data-r="documents">Documentation</a>
-      <a href="#/monitoring" data-r="monitoring">Monitoring</a>
-      <a href="#/value" data-r="value">Why Tessera</a>
+    <nav class="links" id="links" aria-label="Sections">
+      <a href="#platform">Platform</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#assess">Assessment</a>
+      <a href="#eu-act">EU AI Act</a>
+      <a href="#docs">Documents</a>
+      <a href="#monitoring">Monitoring</a>
+      <a href="#value">Value</a>
     </nav>
     <div class="nav-r">
       <div class="bellwrap"><button class="bell" id="bell" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg><i id="bell-n">0</i></button><div class="notif" id="notif" hidden></div></div>
-      <a class="btn btn-primary btn-sm" href="#/demo">Guided Demo</a>
+      <a class="btn btn-primary btn-sm" href="#demo">Guided Demo</a>
     </div>
   </div>
 </header>
@@ -36,8 +38,8 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <div><span class="brand"><span id="logo-slot2"></span><span class="brand-name">Tessera</span></span>
-      <p class="muted">A fictional AI governance product created for a school/university project. All companies, systems and data shown are hypothetical.</p></div>
-    <div class="foot-disc"><b>Educational demonstration.</b> Assessments, scores and recommendations on this site are simulated. They are not legal advice, not a formal legal determination, not live AI analysis and not a regulatory certification. Regulatory summaries are based on <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">Regulation (EU) 2024/1689</a> and the European Commission's <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">AI Act pages</a>.</div>
+      <p class="muted">A fictional product for a school/university project. All companies, systems and data are hypothetical.</p></div>
+    <div class="foot-disc"><b>Educational demonstration.</b> Assessments, scores and recommendations are simulated. They are not legal advice, a formal legal determination, live AI analysis or a regulatory certification. Based on <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">Regulation (EU) 2024/1689</a> and the <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">European Commission's AI Act pages</a>.</div>
   </div>
 </footer>
 <div class="modal" id="modal" hidden><div class="modal-bg" data-act="close"></div><div class="modal-box" role="dialog" aria-modal="true" id="modal-box"></div></div>
@@ -46,14 +48,14 @@
 <script src="js/engine.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/charts.js"></script>
-<script src="js/page-home.js"></script>
-<script src="js/page-dashboard.js"></script>
-<script src="js/page-assess.js"></script>
-<script src="js/page-act.js"></script>
-<script src="js/page-docs.js"></script>
-<script src="js/page-monitor.js"></script>
-<script src="js/page-value.js"></script>
-<script src="js/page-demo.js"></script>
+<script src="js/sec-hero.js"></script>
+<script src="js/sec-dashboard.js"></script>
+<script src="js/sec-assess.js"></script>
+<script src="js/sec-act.js"></script>
+<script src="js/sec-docs.js"></script>
+<script src="js/sec-monitor.js"></script>
+<script src="js/sec-value.js"></script>
+<script src="js/sec-demo.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

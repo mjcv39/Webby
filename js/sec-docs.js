@@ -83,7 +83,6 @@
       T.download(d.id + '-' + d.name.replace(/[^a-z0-9]+/gi, '-').slice(0, 40).toLowerCase() + '.html', html, 'text/html');
     },
     dcat: el => { st.docs.cat = el.dataset.c; T.$$('[data-act="dcat"]').forEach(b => b.classList.toggle('on', b === el)); refresh(); },
-    dstat: el => { st.docs.status = el.dataset.c; T.$$('[data-act="dstat"]').forEach(b => b.classList.toggle('on', b === el)); refresh(); },
     dlcsv: () => T.download('tessera-document-register.csv', 'id,name,category,system,updated,status,version\n' + T.docs.map(d => [d.id, '"' + d.name + '"', d.cat, d.sys, T.fmt(d.upd), d.status, d.ver].join(',')).join('\n'), 'text/csv'),
     tick: el => {
       const set = st.chk[el.dataset.s], i = +el.dataset.i;
@@ -92,31 +91,26 @@
     }
   });
 
-  T.pages.documents = {
+  T.sections.docs = {
+    id: 'docs',
     render() {
       const stats = ['Approved', 'In review', 'Draft', 'Outdated', 'Missing'].map(s => [s, T.docs.filter(d => d.status === s).length]);
-      const hs = T.systems.filter(s => s.cls === 'high' || s.cls === 'limited');
-      return `
-<section class="phead dk"><div class="wrap"><span class="eyebrow">Documentation & compliance centre</span><h1>One library instead of scattered files</h1>
-<p class="lead">Open any document for a realistic simulated preview and download a sample.</p></div></section>
-<section class="sec tint tight"><div class="wrap">
-  <div class="frag rv"><div class="frag-l"><b>Before</b><div class="frag-chips">${['inbox attachments', 'shared-drive v7_final', 'wiki page', 'spreadsheet', 'chat export', 'personal laptop', 'vendor PDF'].map((x, i) => `<span style="--r:${(i * 37) % 14 - 7}deg">${x}</span>`).join('')}</div></div><div class="frag-a">${I('arrow')}</div><div class="frag-r"><b>With Tessera</b><div class="frag-hub">${T.LOGO}<span>${T.docs.length} governed records</span></div></div></div>
-  <div class="dstats">${stats.map(s => `<div class="ds"><b>${s[1]}</b>${T.statBadge(s[0])}</div>`).join('')}</div>
-  <div data-tabs class="tabs-box">
-    <div class="tabs" role="tablist"><button class="tab on" role="tab" aria-selected="true" data-act="tab" data-t="lib">${I('file')} Document library</button><button class="tab" role="tab" aria-selected="false" data-act="tab" data-t="chk">${I('check')} Compliance checklist</button></div>
-    <div data-pane="lib">
-      <div class="lib-top"><div class="search">${I('search')}<input id="dsearch" type="search" placeholder="Search documents" aria-label="Search documents"></div><button class="btn btn-ghost-l btn-sm" data-act="dlcsv">${I('download')} Export register (CSV)</button></div>
+      return `<section id="docs" class="sec"><div class="wrap">
+  <div class="sec-h"><span class="eyebrow rv">05 · Documentation</span><h2 class="rv">One library instead of scattered files</h2>
+    <ul class="pts rv"><li>Every record has an owner, version and status</li><li>Click a document for a simulated preview and download</li></ul></div>
+  <div class="frag rv" data-anim="zoom"><div class="frag-l"><b>Before</b><div class="frag-chips">${['inbox attachments', 'v7_final.docx', 'wiki page', 'spreadsheet', 'chat export', 'personal laptop', 'vendor PDF'].map((x, i) => `<span style="--r:${(i * 37) % 14 - 7}deg">${x}</span>`).join('')}</div></div><div class="frag-a">${I('arrow')}</div><div class="frag-r"><b>With Tessera</b><div class="frag-hub">${T.LOGO}<span>${T.docs.length} governed records</span></div></div></div>
+  <div class="dstats" data-stagger>${stats.map(s => `<div class="ds"><b>${s[1]}</b>${T.statBadge(s[0])}</div>`).join('')}</div>
+  <div class="docs-split">
+    <div>
+      <div class="lib-top"><div class="search">${I('search')}<input id="dsearch" type="search" placeholder="Search documents" aria-label="Search documents"></div><button class="btn btn-ghost-l btn-sm" data-act="dlcsv">${I('download')} Export register</button></div>
       <div class="filters">${['All', ...T.DOC_CATS].map((c, i) => `<button class="fchip ${i ? '' : 'on'}" data-act="dcat" data-c="${c}">${c}</button>`).join('')}</div>
-      <div class="filters">${['All', 'Approved', 'In review', 'Draft', 'Outdated', 'Missing'].map((c, i) => `<button class="fchip sm ${i ? '' : 'on'}" data-act="dstat" data-c="${c}">${c}</button>`).join('')}</div>
-      <div id="doclib">${lib()}</div></div>
-    <div data-pane="chk" hidden><div class="card"><label class="inl">System<select id="chk-sys">${hs.map(s => `<option value="${s.id}">${T.esc(s.name)} (${T.RISK[s.cls].label})</option>`).join('')}</select></label><div id="chk-body">${checklist(hs[0].id)}</div></div></div>
+      <div id="doclib">${lib()}</div>
+    </div>
+    <div class="card chk-card rv" data-anim="right"><span class="eyebrow">Live checklist</span><div id="chk-body">${checklist('S-002')}</div></div>
   </div>
-  <p class="disc">${I('alert')}<span>Sample documents are fictional and simulated for an educational demonstration. They are not real compliance records.</span></p>
+  <p class="disc rv">${I('alert')}<span>Sample documents are fictional and simulated, not real compliance records.</span></p>
 </div></section>`;
     },
-    init(root) {
-      T.$('#dsearch', root).addEventListener('input', e => { st.docs.q = e.target.value; refresh(); });
-      T.$('#chk-sys', root).addEventListener('change', e => { T.$('#chk-body').innerHTML = checklist(e.target.value); });
-    }
+    init(root) { T.$('#dsearch', root).addEventListener('input', e => { st.docs.q = e.target.value; refresh(); }); }
   };
 })(window.T);
