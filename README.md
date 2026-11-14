@@ -21,7 +21,7 @@ python3 -m http.server 8000
 | – | Intro | Night horizon, the sun below it, AI systems in orbit |
 | 01 | The problem *(pinned)* | As you leave the intro, the sun rises and 18 AI tools float up out of the horizon. They gather into an ordered registry, then get colour-coded by risk |
 | 02 | The rules *(pinned)* | The EU AI Act risk pyramid builds layer by layer; a live timeline marks "today" |
-| 03 | Try it | Pick a model and a purpose; the classification updates instantly. "Add to portfolio" carries it forward |
+| 03 | Try it | A working mini-version of Tessera with tabs. **Assess:** pick a model and purpose and get an instant classification. **Requirements:** tick what is in place, or auto-detect controls, and watch readiness update. **Documents:** generate, preview and download the required records. **Monitor:** live status, alerts, a "simulate model update" button and an audit trail of everything you did. "Add to portfolio" carries the system into the dashboard |
 | 04 | The platform | A monitor mockup with the live dashboard, explorable hotspots and clickable system profiles (your system appears here) |
 | 05 | Evidence | A fanned stack of real-looking documents; click to preview and download |
 | 06 | The payoff | Drag-to-compare "shadow AI" vs "sunrise", four benefits, audience marquee |
@@ -61,6 +61,6 @@ js/app.js           scroll engine: mounting, pinning, reveals, sky, rail
 
 Based on Regulation (EU) 2024/1689 ([EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1689/oj)). Classification follows the **intended purpose** of an AI *system*, never the model brand. The timeline reflects the Digital Omnibus on AI (2026), which postponed high-risk obligations to 2 Dec 2027 (Annex III) and 2 Aug 2028 (Annex I). Confirm current dates against official sources.
 
-## Photography
+## Imagery
 
-The real-world photos in `img/` are from [Unsplash](https://unsplash.com/license), which allows free use without permission. They were downloaded, re-encoded and stripped of metadata, and they are served from the repo, so the site works offline. On the page they are colour-graded pink in CSS. The hero uses a real sunrise photograph with an optical bloom and lens flare added on the sun.
+Only the intro (a sunrise) and the finale (mountains at dawn) use photographs. They are from [Unsplash](https://unsplash.com/license), self-hosted in `img/` and colour-graded pink in CSS. The chapters in between use animated line-art drawn in SVG (`js/art.js`): a department network, a balance scale in a ring of stars, a neural network, a radar sweep, drifting documents, and chaos vs order. These are kept faint so they never compete with the text.

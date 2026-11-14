@@ -65,7 +65,7 @@
   T.scenes.product = {
     id: 'product', label: 'The platform',
     render() {
-      return `<section id="product" class="scene">${T.photo('skyline-dusk.jpg', 'ph-band')}<span class="bignum" data-par aria-hidden="true">04</span>
+      return `<section id="product" class="scene">${T.art.product()}<span class="bignum" data-par aria-hidden="true">04</span>
   <div class="wrap">
     <div class="scene-h"><span class="chap rv"><b>04</b>The platform</span><h2>One screen for your <span class="warm">whole AI estate.</span></h2><p class="sub rv">Tap the glowing points to explore. Anything you added in chapter 3 is already here.</p></div>
   </div>
