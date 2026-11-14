@@ -49,7 +49,7 @@
   T.scenes.classify = {
     id: 'classify', label: 'Try it',
     render() {
-      return `<section id="classify" class="scene">${T.photo('laptop-glow.jpg', 'ph-full')}<span class="bignum" data-par aria-hidden="true">03</span>
+      return `<section id="classify" class="scene">${T.photo('light-wave.jpg', 'ph-full')}<span class="bignum" data-par aria-hidden="true">03</span>
   <div class="wrap">
     <div class="scene-h"><span class="chap rv"><b>03</b>Try it</span><h2>Same model. Different purpose. <span class="warm">Different risk.</span></h2><p class="sub rv">Classification follows what an AI system is <i>used for</i>, not whose model is inside.</p></div>
     <div class="classifier">

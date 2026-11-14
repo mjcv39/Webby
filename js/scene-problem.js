@@ -26,7 +26,7 @@
       const depts = new Set(T.systems.map(s => s.dept)).size, provs = new Set(T.systems.map(s => s.provider)).size;
       const list = T.systems.slice(-18);
       return `<section id="problem" class="scene pin" style="--len:190vh">
-  <div class="pin-in">${T.photo('office.jpg', 'ph-full')}<span class="bignum" data-par aria-hidden="true">01</span>
+  <div class="pin-in">${T.photo('city-lights.jpg', 'ph-full')}<span class="bignum" data-par aria-hidden="true">01</span>
     <div class="pin-head">
       <span class="chap"><b>01</b>The problem</span>
       <div class="captions">${steps.map((s, i) => `<div class="cap" data-i="${i}"><h2>${s[0]}</h2><p>${s[1]}</p></div>`).join('')}</div>

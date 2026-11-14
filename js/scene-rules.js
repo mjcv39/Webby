@@ -19,7 +19,7 @@
     render() {
       const now = Date.now();
       return `<section id="rules" class="scene pin" style="--len:180vh">
-  <div class="pin-in">${T.photo('parliament.jpg', 'ph-right')}<span class="bignum" data-par aria-hidden="true">02</span>
+  <div class="pin-in">${T.photo('peak.jpg', 'ph-full ph-peak')}<span class="bignum" data-par aria-hidden="true">02</span>
     <div class="rules-top">
       <span class="chap"><b>02</b>The rules</span>
       <h2>The EU AI Act sorts AI <span class="warm">by risk.</span></h2>

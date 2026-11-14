@@ -88,7 +88,7 @@
     id: 'evidence', label: 'Evidence',
     render() {
       const n = s => T.docs.filter(d => d.status === s).length;
-      return `<section id="evidence" class="scene"><span class="bignum" data-par aria-hidden="true">05</span>
+      return `<section id="evidence" class="scene">${T.photo('archive.jpg', 'ph-full')}<span class="bignum" data-par aria-hidden="true">05</span>
   <div class="wrap evidence">
     <div class="ev-l">
       <span class="chap rv"><b>05</b>Evidence</span>
@@ -97,7 +97,7 @@
       <div class="chips rv">${T.DOC_CATS.map(c => `<span class="chip">${I(CI[c])}${c}</span>`).join('')}</div>
       <p class="hint-t rv">${I('eye')} Click any document to open it</p>
     </div>
-    <div class="fan" data-scrub><div class="ph ph-card fan-ph" data-par aria-hidden="true"><img src="img/signing.jpg" alt="" loading="lazy" decoding="async"></div><span class="fan-cap">Every decision, on record</span>${FAN.map((id, i) => mini(T.docs.find(d => d.id === id), i)).join('')}</div>
+    <div class="fan" data-scrub><div class="ph ph-card fan-ph" data-par aria-hidden="true"><img src="img/archive.jpg" alt="" loading="lazy" decoding="async"></div><span class="fan-cap">Every decision, on record</span>${FAN.map((id, i) => mini(T.docs.find(d => d.id === id), i)).join('')}</div>
   </div>
 </section>`;
     }
